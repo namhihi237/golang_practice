@@ -1,10 +1,14 @@
 package main
 
 import (
+	"practice/models"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	models.SetUp()
+
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
