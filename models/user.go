@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type User struct {
 	Id        int64      `gorm:"primary_key; auto_increment; not null; index;" json:"id"`
@@ -19,4 +23,42 @@ type User struct {
 
 	Cart   Cart    `json:"cart"`
 	Orders []Order `json:"orders"`
+}
+
+func GetUserByUsername(username string) (*User, error) {
+	var user User
+	err := db.Where("user_name = ?", username).First(&user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func CheckUserByUsernameOrEmail(username string, email string) (bool, error) {
+	var user User
+	err := db.Where("user_name = ? or email = ?", username, email).First(&user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return false, err
+	}
+
+	if user.Id > 0 {
+		return true, nil
+	}
+
+	return false, nil
+}
+
+func CreateUser(username string, password string, email string) error {
+	user := User{
+		UserName: username,
+		Password: password,
+		Email:    email,
+	}
+
+	if err := db.Create(&user).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -1,6 +1,8 @@
 package app
 
 import (
+	"practice/pkg/errors"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,10 +16,10 @@ type Response struct {
 	Data interface{} `json:"data"`
 }
 
-func (g *Gin) Response(code int, msg string, data interface{}) {
+func (g *Gin) Response(code int, errCode int, data interface{}) {
 	g.C.JSON(200, Response{
 		Code: code,
-		Msg:  msg,
+		Msg:  errors.GetMsg(errCode),
 		Data: data,
 	})
 	return

@@ -3,19 +3,14 @@ package main
 import (
 	"practice/models"
 
-	"github.com/gin-gonic/gin"
+	"practice/routers"
 )
 
 func main() {
 	models.SetUp()
 
-	r := gin.Default()
+	initRouter := routers.InitRouter()
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World!",
-		})
-	})
+	initRouter.Run(":8000")
 
-	r.Run(":8000") // listen and serve on  :8080
 }
