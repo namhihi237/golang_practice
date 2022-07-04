@@ -7,8 +7,12 @@ var MsgFlags = map[int]string{
 	NOT_FOUND:      "not found",
 	SERVER_ERROR:   "server error",
 
-	USER_ALREADY_EXIST:  "User name or email already exist",
-	HASH_PASSWORD_ERROR: "Hash password error",
+	USER_ALREADY_EXIST:         "User name or email already exist",
+	INVALID_USER_NAME_PASSWORD: "User name or password is invalid",
+	HASH_PASSWORD_ERROR:        "Hash password error",
+	GEN_TOKEN_ERROR:            "Generate token error",
+	INACTIVE_USER:              "User is inactive",
+	USER_BLOCKED:               "User is blocked",
 }
 
 func GetMsg(code int) string {

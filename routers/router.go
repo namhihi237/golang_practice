@@ -11,6 +11,7 @@ func InitRouter() *gin.Engine {
 
 	// authenticate
 	router.POST("/api/v1/auth/register", user.SignUp())
+	router.POST("/api/v1/auth/login", user.SignIn())
 
 	return router
 }
