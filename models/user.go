@@ -15,7 +15,7 @@ type User struct {
 	Phone     string     `gorm:"size:20;" json:"phone"`
 	Address   string     `gorm:"size:255;" json:"address"`
 	Gender    string     `gorm:"size:10;" json:"gender"`
-	IsActive  bool       `gorm:"default: true;" json:"is_active"`
+	IsActive  bool       `gorm:"default: false;" json:"is_active"`
 	IsBlocked bool       `gorm:"default:false;" json:"is_blocked"`
 	CreatedAt *time.Time `gorm:"not null;" json:"created_at"`
 	UpdatedAt *time.Time `gorm:"not null;" json:"updated_at"`

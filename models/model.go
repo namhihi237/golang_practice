@@ -29,7 +29,7 @@ func SetUp() {
 			log.New(os.Stdout, "\r\n", log.LstdFlags),
 			logger.Config{
 				Colorful: false,
-				LogLevel: logger.Info,
+				LogLevel: logger.Info | logger.Warn | logger.Error,
 			},
 		)
 	}
