@@ -62,3 +62,13 @@ func CreateUser(username string, password string, email string) error {
 
 	return nil
 }
+func GetUserById(id int64) (*User, error) {
+	var user User
+	var selectStr = "user_name, email, full_name, phone, address, gender"
+	err := db.Select(selectStr).Where("id = ?", id).First(&user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return &user, nil
+}

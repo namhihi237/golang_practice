@@ -13,6 +13,7 @@ var MsgFlags = map[int]string{
 	GEN_TOKEN_ERROR:            "Generate token error",
 	INACTIVE_USER:              "User is inactive",
 	USER_BLOCKED:               "User is blocked",
+	INVALID_TOKEN:              "Invalid token",
 }
 
 func GetMsg(code int) string {

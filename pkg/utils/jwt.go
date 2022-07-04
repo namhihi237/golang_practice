@@ -41,6 +41,28 @@ func GenerateToken(data interface{}) (*string, error) {
 	return &token, err
 }
 
+func ParseToken(token string) (*Claims, error) {
+	var err error
+	var env config.Env
+
+	env, err = config.GetEnv()
+	if err != nil {
+		return nil, err
+	}
+
+	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(env.JWT_secret), nil
+	})
+
+	if tokenClaims != nil {
+		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
+			return claims, nil
+		}
+	}
+
+	return nil, err
+}
+
 func expireTime() *jwt.NumericDate {
 	return jwt.NewNumericDate(time.Now().Add(24 * time.Hour))
 }
