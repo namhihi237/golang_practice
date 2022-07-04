@@ -20,7 +20,13 @@ type User struct {
 	Gender   string `gorm:"size:10;" json:"gender"`
 }
 
-func GetMe() gin.HandlerFunc {
+// @Summary Get Profile
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Success 200 {object} User{}
+// @Failure 400 {object} app.Response
+// @Router /profile [get]
+func GetProfile() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appG := app.Gin{C: c}
 		userLogin := c.MustGet("user").(*utils.Claims)

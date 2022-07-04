@@ -26,6 +26,13 @@ type UserResponse struct {
 	Gender   string `json:"gender"`
 }
 
+// @Summary Login
+// @Produce  json
+// @Param user_name body string true "user name"
+// @Param password body string true "password"
+// @Success 200 {object} app.Response
+// @Failure 500 {object} app.Response
+// @Router /auth/login [post]
 func SignIn() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var appG = app.Gin{C: c}

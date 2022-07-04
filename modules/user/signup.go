@@ -17,6 +17,14 @@ type UserRegistration struct {
 	Password string `json:"password" validate:"required,min=6,max=50"`
 }
 
+// @Summary Register
+// @Produce  json
+// @Param user_name body string true "user name"
+// @Param email body string true "email"
+// @Param password body string true "password"
+// @Success 200 {object} app.Response
+// @Failure 500 {object} app.Response
+// @Router /auth/register [post]
 func SignUp() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var appG = app.Gin{C: ctx}
