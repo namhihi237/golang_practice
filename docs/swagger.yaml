@@ -27,43 +27,19 @@ definitions:
 info:
   contact: {}
 paths:
-  /auth/login:
+  /admin/login:
     post:
       parameters:
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
+      - description: user name
+        in: body
+        name: user_name
         required: true
-        type: string
-      - description: full name
-        in: body
-        name: full_name
         schema:
           type: string
-      - description: phone number
+      - description: password
         in: body
-        name: phone
-        schema:
-          type: string
-      - description: birthday
-        in: body
-        name: birthday
-        schema:
-          type: string
-      - description: gender
-        in: body
-        name: gender
-        schema:
-          type: string
-      - description: email
-        in: body
-        name: email
-        schema:
-          type: string
-      - description: address
-        in: body
-        name: address
+        name: password
+        required: true
         schema:
           type: string
       produces:
@@ -77,7 +53,34 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/app.Response'
-      summary: Update profile
+      summary: Admin Login
+  /auth/login:
+    post:
+      parameters:
+      - description: user name
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Login
   /auth/register:
     post:
       parameters:
@@ -132,4 +135,54 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: Get Profile
+    put:
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: full name
+        in: body
+        name: full_name
+        schema:
+          type: string
+      - description: phone number
+        in: body
+        name: phone
+        schema:
+          type: string
+      - description: birthday
+        in: body
+        name: birthday
+        schema:
+          type: string
+      - description: gender
+        in: body
+        name: gender
+        schema:
+          type: string
+      - description: email
+        in: body
+        name: email
+        schema:
+          type: string
+      - description: address
+        in: body
+        name: address
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Update profile
 swagger: "2.0"
