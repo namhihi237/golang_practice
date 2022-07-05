@@ -15,6 +15,7 @@ var MsgFlags = map[int]string{
 	USER_BLOCKED:               "User is blocked",
 	INVALID_TOKEN:              "Invalid token",
 	ERROR_EXIST_EMAIL:          "Email already exist",
+	USER_DELETED:               "User is deleted",
 }
 
 func GetMsg(code int) string {

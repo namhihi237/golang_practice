@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"fmt"
+	"practice/models"
 	"practice/pkg/errors"
 	"practice/pkg/utils"
 
@@ -23,6 +25,15 @@ func JWT() gin.HandlerFunc {
 			}
 		}
 
+		user := data.(*utils.Claims)
+		me, err := models.GetUserById(user.Id)
+		if err != nil {
+			code = errors.SERVER_ERROR
+		}
+		fmt.Println(me)
+		code = CheckUser(me)
+		fmt.Println(code)
+
 		if code != errors.SUCCESS {
 			c.JSON(200, gin.H{
 				"code": code,
@@ -32,7 +43,7 @@ func JWT() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user", data)
+		c.Set("user", user)
 		c.Next()
 	}
 }

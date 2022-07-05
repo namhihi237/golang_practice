@@ -2,6 +2,7 @@ package user
 
 import (
 	"net/http"
+	"practice/middleware"
 	"practice/models"
 	"practice/pkg/app"
 	"practice/pkg/errors"
@@ -64,13 +65,9 @@ func SignIn() gin.HandlerFunc {
 			return
 		}
 
-		if !isActive(user) {
-			appG.Response(http.StatusBadRequest, errors.INACTIVE_USER, nil)
-			return
-		}
-
-		if isBlocked(user) {
-			appG.Response(http.StatusBadRequest, errors.USER_BLOCKED, nil)
+		code := middleware.CheckUser(user)
+		if code != errors.SUCCESS {
+			appG.Response(http.StatusUnauthorized, code, nil)
 			return
 		}
 
@@ -103,12 +100,4 @@ func SignIn() gin.HandlerFunc {
 		})
 
 	}
-}
-
-func isActive(user *models.User) bool {
-	return user.IsActive
-}
-
-func isBlocked(user *models.User) bool {
-	return user.IsBlocked
 }
