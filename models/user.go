@@ -15,6 +15,7 @@ type User struct {
 	Phone     string     `gorm:"size:20; default: null;" json:"phone"`
 	Address   string     `gorm:"size:255; default: null;" json:"address"`
 	Gender    string     `gorm:"size:10; default: null;" json:"gender"`
+	Birthday  *time.Time `gorm:"default: null;" json:"birthday"`
 	IsActive  bool       `gorm:"default: false;" json:"is_active"`
 	IsBlocked bool       `gorm:"default:false;" json:"is_blocked"`
 	CreatedAt *time.Time `gorm:"not null;" json:"created_at"`
@@ -65,7 +66,7 @@ func CreateUser(username string, password string, email string) error {
 
 func GetUserById(id int64) (*User, error) {
 	var user User
-	var selectStr = "user_name, email, full_name, phone, address, gender"
+	var selectStr = "id, user_name, email, full_name, phone, address, gender, birthday"
 	err := db.Select(selectStr).Where("id = ?", id).First(&user).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
@@ -90,6 +91,14 @@ func ActiveAccount(id int64) error {
 	}
 
 	if err := db.Model(&user).Update("is_active", true).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func UpdateUser(id int64, data interface{}) error {
+	if err := db.Model(&User{}).Where("id = ?", id).Updates(data).Error; err != nil {
 		return err
 	}
 

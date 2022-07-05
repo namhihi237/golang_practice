@@ -6,6 +6,7 @@ import (
 	"practice/pkg/app"
 	"practice/pkg/errors"
 	"practice/pkg/utils"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -17,13 +18,14 @@ type UserLogin struct {
 }
 
 type UserResponse struct {
-	Id       int64  `json:"id"`
-	UserName string `json:"user_name"`
-	FullName string `json:"fullName"`
-	Email    string `json:"email"`
-	Phone    string `json:"phone"`
-	Address  string `json:"address"`
-	Gender   string `json:"gender"`
+	Id       int64      `json:"id"`
+	UserName string     `json:"user_name"`
+	FullName string     `json:"fullName"`
+	Email    string     `json:"email"`
+	Phone    string     `json:"phone"`
+	Address  string     `json:"address"`
+	Gender   string     `json:"gender"`
+	Birthday *time.Time `json:"birthday"`
 }
 
 // @Summary Login
@@ -92,6 +94,7 @@ func SignIn() gin.HandlerFunc {
 			Phone:    user.Phone,
 			Address:  user.Address,
 			Gender:   user.Gender,
+			Birthday: user.Birthday,
 		}
 
 		appG.Response(http.StatusOK, errors.SUCCESS, map[string]interface{}{

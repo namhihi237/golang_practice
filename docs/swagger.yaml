@@ -30,16 +30,40 @@ paths:
   /auth/login:
     post:
       parameters:
-      - description: user name
-        in: body
-        name: user_name
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
         required: true
+        type: string
+      - description: full name
+        in: body
+        name: full_name
         schema:
           type: string
-      - description: password
+      - description: phone number
         in: body
-        name: password
-        required: true
+        name: phone
+        schema:
+          type: string
+      - description: birthday
+        in: body
+        name: birthday
+        schema:
+          type: string
+      - description: gender
+        in: body
+        name: gender
+        schema:
+          type: string
+      - description: email
+        in: body
+        name: email
+        schema:
+          type: string
+      - description: address
+        in: body
+        name: address
         schema:
           type: string
       produces:
@@ -53,7 +77,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/app.Response'
-      summary: Login
+      summary: Update profile
   /auth/register:
     post:
       parameters:

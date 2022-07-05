@@ -21,22 +21,60 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Login",
+                "summary": "Update profile",
                 "parameters": [
                     {
-                        "description": "user name",
-                        "name": "user_name",
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "full name",
+                        "name": "full_name",
                         "in": "body",
-                        "required": true,
                         "schema": {
                             "type": "string"
                         }
                     },
                     {
-                        "description": "password",
-                        "name": "password",
+                        "description": "phone number",
+                        "name": "phone",
                         "in": "body",
-                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "birthday",
+                        "name": "birthday",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "gender",
+                        "name": "gender",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "email",
+                        "name": "email",
+                        "in": "body",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "address",
+                        "name": "address",
+                        "in": "body",
                         "schema": {
                             "type": "string"
                         }

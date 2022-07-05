@@ -25,6 +25,7 @@ func InitRouter() *gin.Engine {
 	apiV1.Use(middleware.JWT())
 	{
 		apiV1.GET("/profile", user.GetProfile())
+		apiV1.PUT("/profile", user.UpdateUser())
 	}
 
 	return router
