@@ -11,10 +11,10 @@ type User struct {
 	UserName  string     `gorm:"not null; size:255; unique;" json:"user_name"`
 	Password  string     `gorm:"not null; size:255;" json:"password"`
 	Email     string     `gorm:"not null; size:255; unique;" json:"email"`
-	FullName  string     `gorm:"not null; size:255;" json:"full_name"`
-	Phone     string     `gorm:"size:20;" json:"phone"`
-	Address   string     `gorm:"size:255;" json:"address"`
-	Gender    string     `gorm:"size:10;" json:"gender"`
+	FullName  string     `gorm:"default: null; size:255;" json:"full_name"`
+	Phone     string     `gorm:"size:20; default: null;" json:"phone"`
+	Address   string     `gorm:"size:255; default: null;" json:"address"`
+	Gender    string     `gorm:"size:10; default: null;" json:"gender"`
 	IsActive  bool       `gorm:"default: false;" json:"is_active"`
 	IsBlocked bool       `gorm:"default:false;" json:"is_blocked"`
 	CreatedAt *time.Time `gorm:"not null;" json:"created_at"`
@@ -62,6 +62,7 @@ func CreateUser(username string, password string, email string) error {
 
 	return nil
 }
+
 func GetUserById(id int64) (*User, error) {
 	var user User
 	var selectStr = "user_name, email, full_name, phone, address, gender"
@@ -71,4 +72,26 @@ func GetUserById(id int64) (*User, error) {
 	}
 
 	return &user, nil
+}
+
+func GetUserByEmail(email string) (*User, error) {
+	var user User
+	err := db.Where("email = ?", email).First(&user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func ActiveAccount(id int64) error {
+	user := User{
+		Id: id,
+	}
+
+	if err := db.Model(&user).Update("is_active", true).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

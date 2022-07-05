@@ -63,6 +63,10 @@ func SignUp() gin.HandlerFunc {
 			return
 		}
 
+		go func() {
+			_ = utils.SendEmailActiveAccount(userRegistration.Email)
+		}()
+
 		appG.Response(http.StatusOK, errors.SUCCESS, nil)
 	}
 }

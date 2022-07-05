@@ -12,6 +12,8 @@ type Env struct {
 	Port       string `json:"port"`
 	Go_env     string `json:"go_env"`
 	JWT_secret string `json:"jwt_secret"`
+	Email      string `json:"email"`
+	EmailPass  string `json:"email_pass"`
 }
 
 func GetEnv() (Env, error) {
@@ -25,5 +27,7 @@ func GetEnv() (Env, error) {
 		Port:       os.Getenv("PORT"),
 		Go_env:     os.Getenv("GO_ENV"),
 		JWT_secret: os.Getenv("JWT_SECRET"),
+		Email:      os.Getenv("EMAIL"),
+		EmailPass:  os.Getenv("EMAIL_PASSWORD"),
 	}, e
 }
