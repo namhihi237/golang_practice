@@ -4,6 +4,7 @@ import (
 	"practice/config"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 )
 
@@ -11,6 +12,7 @@ type Claims struct {
 	Id       int64  `json:"id"`
 	UserName string `json:"user_name"`
 	Email    string `json:"email"`
+	UserType string `json:"user_type"`
 	jwt.RegisteredClaims
 }
 
@@ -29,6 +31,7 @@ func GenerateToken(data interface{}) (*string, error) {
 		Id:       data.(map[string]interface{})["id"].(int64),
 		UserName: data.(map[string]interface{})["user_name"].(string),
 		Email:    data.(map[string]interface{})["email"].(string),
+		UserType: data.(map[string]interface{})["user_type"].(string),
 	}
 
 	claims.RegisteredClaims = jwt.RegisteredClaims{
@@ -65,4 +68,12 @@ func ParseToken(token string) (*Claims, error) {
 
 func expireTime() *jwt.NumericDate {
 	return jwt.NewNumericDate(time.Now().Add(24 * time.Hour))
+}
+
+func GetBearerToken(c *gin.Context) string {
+	bearerToken := c.GetHeader("Authorization")
+	if len(bearerToken) > 7 && bearerToken[0:7] == "Bearer " {
+		return bearerToken[7:]
+	}
+	return ""
 }

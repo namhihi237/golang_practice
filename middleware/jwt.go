@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"practice/models"
 	"practice/pkg/errors"
 	"practice/pkg/utils"
@@ -9,13 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func JWT() gin.HandlerFunc {
+func JWT(isAdmin bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var data interface{}
 		var err error
 		var code = errors.SUCCESS
 
-		token := getBearerToken(c)
+		token := utils.GetBearerToken(c)
 		if token == "" {
 			code = errors.UNAUTHORIZED
 		} else {
@@ -26,13 +25,12 @@ func JWT() gin.HandlerFunc {
 		}
 
 		user := data.(*utils.Claims)
-		me, err := models.GetUserById(user.Id)
-		if err != nil {
-			code = errors.SERVER_ERROR
+
+		if isAdmin {
+			code = validateAdmin(user)
+		} else {
+			code = validateUser(user)
 		}
-		fmt.Println(me)
-		code = CheckUser(me)
-		fmt.Println(code)
 
 		if code != errors.SUCCESS {
 			c.JSON(200, gin.H{
@@ -48,10 +46,28 @@ func JWT() gin.HandlerFunc {
 	}
 }
 
-func getBearerToken(c *gin.Context) string {
-	bearerToken := c.GetHeader("Authorization")
-	if len(bearerToken) > 7 && bearerToken[0:7] == "Bearer " {
-		return bearerToken[7:]
+func validateUser(user *utils.Claims) int {
+	me, err := models.GetUserById(user.Id)
+	if err != nil {
+		return errors.SERVER_ERROR
 	}
-	return ""
+
+	if me == nil || user.UserType != "user" {
+		return errors.UNAUTHORIZED_ACCESS
+	}
+
+	return CheckUser(me)
+}
+
+func validateAdmin(admin *utils.Claims) int {
+	me, err := models.GetAdminById(admin.Id)
+	if err != nil {
+		return errors.SERVER_ERROR
+	}
+
+	if me == nil || admin.UserType != "admin" {
+		return errors.UNAUTHORIZED_ACCESS
+	}
+
+	return CheckAdmin(me)
 }

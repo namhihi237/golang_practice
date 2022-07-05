@@ -75,6 +75,7 @@ func SignIn() gin.HandlerFunc {
 			"id":        user.Id,
 			"user_name": user.UserName,
 			"email":     user.Email,
+			"user_type": user.UserType.Name,
 		}
 
 		token, err := utils.GenerateToken(data)

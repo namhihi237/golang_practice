@@ -2,6 +2,7 @@ package admin
 
 import (
 	"net/http"
+	"practice/middleware"
 	"practice/models"
 	"practice/pkg/app"
 	"practice/pkg/errors"
@@ -49,10 +50,17 @@ func SignIn() gin.HandlerFunc {
 			return
 		}
 
+		code := middleware.CheckAdmin(admin)
+		if code != errors.SUCCESS {
+			appG.Response(http.StatusUnauthorized, code, nil)
+			return
+		}
+
 		data := map[string]interface{}{
 			"id":        admin.Id,
 			"user_name": admin.UserName,
 			"email":     admin.Email,
+			"user_type": admin.UserType.Name,
 		}
 
 		token, err := utils.GenerateToken(data)

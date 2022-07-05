@@ -5,29 +5,30 @@ import (
 	"practice/pkg/errors"
 )
 
-func isActive(user *models.User) bool {
-	return user.IsActive
-}
-
-func isBlocked(user *models.User) bool {
-	return user.IsBlocked
-}
-
-func isDeleted(user *models.User) bool {
-	return user.DeletedAt != nil
-}
-
 func CheckUser(user *models.User) int {
-	if isDeleted(user) {
+	if user.DeletedAt != nil {
 		return errors.USER_DELETED
 	}
 
-	if !isActive(user) {
+	if !user.IsActive {
 		return errors.INACTIVE_USER
 	}
 
-	if isBlocked(user) {
+	if user.IsBlocked {
 		return errors.USER_BLOCKED
+	}
+
+	return errors.SUCCESS
+
+}
+
+func CheckAdmin(admin *models.Admin) int {
+	if admin.DeletedAt != nil {
+		return errors.ADMIN_DELETED
+	}
+
+	if !admin.IsActive {
+		return errors.INACTIVE_ADMIN
 	}
 
 	return errors.SUCCESS

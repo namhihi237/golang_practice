@@ -26,7 +26,7 @@ func InitRouter() *gin.Engine {
 	router.POST("/admin/login", admin.SignIn())
 
 	apiV1 := router.Group("/api/v1")
-	apiV1.Use(middleware.JWT())
+	apiV1.Use(middleware.JWT(false))
 	{
 		apiV1.GET("/profile", user.GetProfile())
 		apiV1.PUT("/profile", user.UpdateUser())

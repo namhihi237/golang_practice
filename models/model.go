@@ -45,6 +45,7 @@ func SetUp() {
 	log.Printf("Connected to database: %s", env.DbUrl)
 
 	// migrate the schema
+	db.AutoMigrate(&UserType{})
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Product{})
 	db.AutoMigrate(&Category{})
