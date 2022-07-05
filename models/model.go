@@ -56,6 +56,9 @@ func SetUp() {
 	db.AutoMigrate(&OrderItem{})
 	db.AutoMigrate(&Admin{})
 
+	// migrate the schema
+	// db.Migrator().RenameColumn(&Admin{}, "username", "user_name")
+
 }
 
 func GetDb() *gorm.DB {

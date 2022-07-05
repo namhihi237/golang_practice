@@ -30,7 +30,7 @@ type UserUpdate struct {
 // @Param address body string false "address"
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
-// @Router /auth/login [post]
+// @Router /profile [put]
 func UpdateUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appG := app.Gin{C: c}
