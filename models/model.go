@@ -48,7 +48,7 @@ func SetUp() {
 	autoMigrate()
 
 	// change column name
-	renameColumn(&Admin{}, "user_name", "username")
+	renameColumn(&Admin{}, "username", "user_name")
 }
 
 func GetDb() *gorm.DB {
@@ -78,7 +78,7 @@ func checkTableExistAndMigrate(dts interface{}) {
 // Note: when update name: run this func and update models
 func renameColumn(dts interface{}, oldName string, newName string) {
 	if db.Migrator().HasTable(dts) {
-		if !db.Migrator().HasColumn(dts, oldName) {
+		if db.Migrator().HasColumn(dts, oldName) {
 			db.Migrator().RenameColumn(dts, oldName, newName)
 		}
 	}

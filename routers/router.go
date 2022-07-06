@@ -3,6 +3,7 @@ package routers
 import (
 	"practice/middleware"
 	"practice/modules/admin"
+	"practice/modules/category"
 	"practice/modules/user"
 
 	_ "practice/docs"
@@ -25,11 +26,15 @@ func InitRouter() *gin.Engine {
 	// login admin
 	router.POST("/admin/login", admin.SignIn())
 
+	// middleware.JWT(false) is used to check user
+	// middleware.JWT(true) is used to check admin
 	apiV1 := router.Group("/api/v1")
-	apiV1.Use(middleware.JWT(false))
 	{
-		apiV1.GET("/profile", user.GetProfile())
-		apiV1.PUT("/profile", user.UpdateUser())
+		apiV1.GET("/profile", middleware.JWT(false), user.GetProfile())
+		apiV1.PUT("/profile", middleware.JWT(false), user.UpdateUser())
+
+		//category
+		apiV1.POST("/categories", middleware.JWT(true), category.AddCategory())
 	}
 
 	return router
