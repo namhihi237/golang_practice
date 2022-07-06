@@ -45,23 +45,41 @@ func SetUp() {
 	log.Printf("Connected to database: %s", env.DbUrl)
 
 	// migrate the schema
-	db.AutoMigrate(&UserType{})
-	db.AutoMigrate(&User{})
-	db.AutoMigrate(&Product{})
-	db.AutoMigrate(&Category{})
-	db.AutoMigrate(&CategoryProduct{})
-	db.AutoMigrate(&Image{})
-	db.AutoMigrate(&Cart{})
-	db.AutoMigrate(&CartItem{})
-	db.AutoMigrate(&Order{})
-	db.AutoMigrate(&OrderItem{})
-	db.AutoMigrate(&Admin{})
+	autoMigrate()
 
-	// migrate the schema
-	// db.Migrator().RenameColumn(&Admin{}, "username", "user_name")
-
+	// change column name
+	renameColumn(&Admin{}, "user_name", "username")
 }
 
 func GetDb() *gorm.DB {
 	return db
+}
+
+func autoMigrate() {
+	checkTableExistAndMigrate(&UserType{})
+	checkTableExistAndMigrate(&User{})
+	checkTableExistAndMigrate(&Product{})
+	checkTableExistAndMigrate(&Category{})
+	checkTableExistAndMigrate(&CategoryProduct{})
+	checkTableExistAndMigrate(&Image{})
+	checkTableExistAndMigrate(&Cart{})
+	checkTableExistAndMigrate(&CartItem{})
+	checkTableExistAndMigrate(&Order{})
+	checkTableExistAndMigrate(&OrderItem{})
+	checkTableExistAndMigrate(&Admin{})
+}
+
+func checkTableExistAndMigrate(dts interface{}) {
+	if !db.Migrator().HasTable(dts) {
+		db.AutoMigrate(dts)
+	}
+}
+
+// Note: when update name: run this func and update models
+func renameColumn(dts interface{}, oldName string, newName string) {
+	if db.Migrator().HasTable(dts) {
+		if !db.Migrator().HasColumn(dts, oldName) {
+			db.Migrator().RenameColumn(dts, oldName, newName)
+		}
+	}
 }

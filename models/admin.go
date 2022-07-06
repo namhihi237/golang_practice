@@ -8,7 +8,7 @@ import (
 
 type Admin struct {
 	Id         int64      `gorm:"primary_key; auto_increment; not null; index;" json:"id"`
-	UserName   string     `gorm:"not null; size:255; unique;" json:"user_name"`
+	UserName   string     `gorm:"not null; size:255; unique; column:user_name" json:"user_name"`
 	Password   string     `gorm:"not null; size:255;" json:"password"`
 	Email      string     `gorm:"not null; size:255; unique;" json:"email"`
 	IsActive   bool       `gorm:"not null; default: true;" json:"is_active"`
@@ -36,7 +36,7 @@ func GetAdminByUserName(userName string) (*Admin, error) {
 
 func GetAdminById(id int64) (*Admin, error) {
 	var admin Admin
-	err := db.Joins("UserType").Where("id = ?", id).First(&admin).Error
+	err := db.Joins("UserType").Where("admins.id = ?", id).First(&admin).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
