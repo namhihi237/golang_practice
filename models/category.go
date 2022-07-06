@@ -3,8 +3,6 @@ package models
 import (
 	"errors"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Category struct {
@@ -19,22 +17,83 @@ type Category struct {
 	Products []Product `json:"products" gorm:"many2many:category_products;"`
 }
 
+func GetCategoryByName(name string) (*Category, error) {
+	var category Category
+	err := db.Where("name = ?", name).Limit(1).Find(&category).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if category.Id <= 0 {
+		return nil, nil
+	}
+
+	return &category, nil
+}
+
+func GetCategoryById(id int64) (*Category, error) {
+	var category Category
+	err := db.Where("id = ?", id).Limit(1).Find(&category).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if category.Id <= 0 {
+		return nil, nil
+	}
+
+	return &category, nil
+}
+
 func CreateCategory(name string, image string, description string) error {
 	// check name is exist
-	var c Category
-	err := db.Where("name = ?", name).First(&c).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+	c, err := GetCategoryByName(name)
+	if err != nil {
 		return err
 	}
 
-	if c.Id > 0 {
+	if c == nil {
+		category := &Category{
+			Name:        name,
+			Image:       image,
+			Description: description,
+		}
+		return db.Create(category).Error
+	}
+
+	return errors.New("Category name is exist")
+}
+
+func UpdateCategory(id int64, name string, image string, description string) error {
+	// check id is exist
+	c, err := GetCategoryById(id)
+	if err != nil {
+		return err
+	}
+
+	if c == nil {
+		return errors.New("Category not found")
+	}
+
+	// check name is exist
+	c, err = GetCategoryByName(name)
+	if err != nil {
+		return err
+	}
+
+	if c != nil {
 		return errors.New("Category name is exist")
 	}
 
 	category := &Category{
+		Id:          id,
 		Name:        name,
 		Image:       image,
 		Description: description,
 	}
-	return db.Create(category).Error
+	if err := db.Model(&Category{}).Where("id = ?", id).Updates(category).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -35,6 +35,7 @@ func InitRouter() *gin.Engine {
 
 		//category
 		apiV1.POST("/categories", middleware.JWT(true), category.AddCategory())
+		apiV1.PUT("/categories/:id", middleware.JWT(true), category.UpdateCategory())
 	}
 
 	return router

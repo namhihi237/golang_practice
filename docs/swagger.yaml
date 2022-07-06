@@ -114,6 +114,82 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: Register
+  /categories:
+    post:
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: image
+        in: body
+        name: image
+        required: true
+        schema:
+          type: string
+      - description: description
+        in: body
+        name: description
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Add category
+  /categories/:id:
+    put:
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: image
+        in: body
+        name: image
+        required: true
+        schema:
+          type: string
+      - description: description
+        in: body
+        name: description
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Update category
   /profile:
     get:
       parameters:
