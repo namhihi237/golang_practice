@@ -17,6 +17,16 @@ type Category struct {
 	Products []Product `json:"products" gorm:"many2many:category_products;"`
 }
 
+type CategoryResponse struct {
+	Id          int64      `json:"id"`
+	Name        string     `json:"name"`
+	Image       string     `json:"image"`
+	Description string     `json:"description"`
+	CreatedAt   *time.Time `json:"created_at"`
+	UpdatedAt   *time.Time `json:"updated_at"`
+	DeletedAt   *time.Time `json:"deleted_at"`
+}
+
 func GetCategoryByName(name string) (*Category, error) {
 	var category Category
 	err := db.Where("name = ?", name).Limit(1).Find(&category).Error
@@ -96,4 +106,24 @@ func UpdateCategory(id int64, name string, image string, description string) err
 	}
 
 	return nil
+}
+
+func GetCategories(page int, limit int) ([]CategoryResponse, error) {
+	var categories []CategoryResponse
+	if page > 0 && limit > 0 {
+		db.Model(&Category{}).
+			Offset((page - 1) * limit).
+			Limit(limit).
+			Find(&categories)
+	} else {
+		db.Model(&Category{}).Find(&categories)
+	}
+
+	return categories, nil
+}
+
+func CountCategory() int64 {
+	var count int64
+	db.Model(&Category{}).Count(&count)
+	return count
 }

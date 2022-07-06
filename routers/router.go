@@ -29,13 +29,21 @@ func InitRouter() *gin.Engine {
 	// middleware.JWT(false) is used to check user
 	// middleware.JWT(true) is used to check admin
 	apiV1 := router.Group("/api/v1")
+	apiV1.Use(middleware.JWT(false))
 	{
-		apiV1.GET("/profile", middleware.JWT(false), user.GetProfile())
-		apiV1.PUT("/profile", middleware.JWT(false), user.UpdateUser())
+		apiV1.GET("/profile", user.GetProfile())
+		apiV1.PUT("/profile", user.UpdateUser())
 
 		//category
-		apiV1.POST("/categories", middleware.JWT(true), category.AddCategory())
-		apiV1.PUT("/categories/:id", middleware.JWT(true), category.UpdateCategory())
+
+	}
+
+	adminV1 := router.Group("/admin/api/v1")
+	adminV1.Use(middleware.JWT(true))
+	{
+		adminV1.POST("/categories", category.AddCategory())
+		adminV1.PUT("/categories/:id", category.UpdateCategory())
+		adminV1.GET("/categories", category.AdminGetListCategories())
 	}
 
 	return router
