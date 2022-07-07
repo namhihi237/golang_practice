@@ -25,7 +25,7 @@ type CategoryInput struct {
 // @Param description body string false "description"
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
-// @Router /categories [post]
+// @Router /admin/api/v1/categories [post]
 func AddCategory() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appG := app.Gin{C: c}

@@ -44,6 +44,7 @@ func InitRouter() *gin.Engine {
 		adminV1.POST("/categories", category.AddCategory())
 		adminV1.PUT("/categories/:id", category.UpdateCategory())
 		adminV1.GET("/categories", category.AdminGetListCategories())
+		adminV1.GET("/categories/:id", category.AdminGetCategory())
 	}
 
 	return router

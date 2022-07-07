@@ -20,12 +20,13 @@ type CategoryUpdate struct {
 // @Summary Update category
 // @Produce  json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param id path string true "id category"
 // @Param name body string true "name"
 // @Param image body string true "image"
 // @Param description body string false "description"
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
-// @Router /categories/:id [PUT]
+// @Router /admin/api/v1/categories/:id [PUT]
 func UpdateCategory() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appG := app.Gin{C: c}

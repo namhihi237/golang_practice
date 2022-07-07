@@ -27,8 +27,8 @@ type CategoryResponse struct {
 	DeletedAt   *time.Time `json:"deleted_at"`
 }
 
-func GetCategoryByName(name string) (*Category, error) {
-	var category Category
+func GetCategoryByName(name string) (*CategoryResponse, error) {
+	var category CategoryResponse
 	err := db.Where("name = ?", name).Limit(1).Find(&category).Error
 	if err != nil {
 		return nil, err
@@ -41,9 +41,9 @@ func GetCategoryByName(name string) (*Category, error) {
 	return &category, nil
 }
 
-func GetCategoryById(id int64) (*Category, error) {
-	var category Category
-	err := db.Where("id = ?", id).Limit(1).Find(&category).Error
+func GetCategoryById(id int64) (*CategoryResponse, error) {
+	var category CategoryResponse
+	err := db.Model(&Category{}).Where("id = ?", id).Limit(1).Find(&category).Error
 	if err != nil {
 		return nil, err
 	}

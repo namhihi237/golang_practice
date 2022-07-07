@@ -27,21 +27,23 @@ definitions:
 info:
   contact: {}
 paths:
-  /admin/login:
-    post:
+  /admin/api/v1/categories:
+    get:
       parameters:
-      - description: user name
-        in: body
-        name: user_name
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
         required: true
-        schema:
-          type: string
-      - description: password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
       produces:
       - application/json
       responses:
@@ -53,68 +55,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/app.Response'
-      summary: Admin Login
-  /auth/login:
-    post:
-      parameters:
-      - description: user name
-        in: body
-        name: user_name
-        required: true
-        schema:
-          type: string
-      - description: password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/app.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/app.Response'
-      summary: Login
-  /auth/register:
-    post:
-      parameters:
-      - description: user name
-        in: body
-        name: user_name
-        required: true
-        schema:
-          type: string
-      - description: email
-        in: body
-        name: email
-        required: true
-        schema:
-          type: string
-      - description: password
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/app.Response'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/app.Response'
-      summary: Register
-  /categories:
+      summary: Admin get categories
     post:
       parameters:
       - default: Bearer <Add access token here>
@@ -152,13 +93,18 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: Add category
-  /categories/:id:
+  /admin/api/v1/categories/:id:
     put:
       parameters:
       - default: Bearer <Add access token here>
         description: Insert your access token
         in: header
         name: Authorization
+        required: true
+        type: string
+      - description: id category
+        in: path
+        name: id
         required: true
         type: string
       - description: name
@@ -190,7 +136,34 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: Update category
-  /profile:
+  /admin/login:
+    post:
+      parameters:
+      - description: user name
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Admin Login
+  /api/v1/profile:
     get:
       parameters:
       - default: Bearer <Add access token here>
@@ -261,4 +234,64 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: Update profile
+  /auth/login:
+    post:
+      parameters:
+      - description: user name
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Login
+  /auth/register:
+    post:
+      parameters:
+      - description: user name
+        in: body
+        name: user_name
+        required: true
+        schema:
+          type: string
+      - description: email
+        in: body
+        name: email
+        required: true
+        schema:
+          type: string
+      - description: password
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Register
 swagger: "2.0"

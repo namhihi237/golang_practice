@@ -25,7 +25,7 @@ type User struct {
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Success 200 {object} User{}
 // @Failure 400 {object} app.Response
-// @Router /profile [get]
+// @Router /api/v1/profile [get]
 func GetProfile() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appG := app.Gin{C: c}
