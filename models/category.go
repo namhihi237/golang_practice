@@ -127,3 +127,10 @@ func CountCategory() int64 {
 	db.Model(&Category{}).Count(&count)
 	return count
 }
+
+func DeleteCategory(id int64) error {
+	category := &Category{
+		Id: id,
+	}
+	return db.Delete(category).Error
+}

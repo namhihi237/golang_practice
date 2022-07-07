@@ -18,7 +18,7 @@ import (
 // @Param limit query string false "limit"
 // @Success 200 {object} app.Response
 // @Failure 500 {object} app.Response
-// @Router /admin/api/v1/categories [get]
+// @Router /admin/api/v1/categories/:id [get]
 func AdminGetCategory() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appG := app.Gin{C: c}
