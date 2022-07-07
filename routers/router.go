@@ -4,6 +4,7 @@ import (
 	"practice/middleware"
 	"practice/modules/admin"
 	"practice/modules/category"
+	"practice/modules/product"
 	"practice/modules/user"
 
 	_ "practice/docs"
@@ -41,11 +42,15 @@ func InitRouter() *gin.Engine {
 	adminV1 := router.Group("/admin/api/v1")
 	adminV1.Use(middleware.JWT(true))
 	{
+		// category
 		adminV1.POST("/categories", category.AddCategory())
 		adminV1.PUT("/categories/:id", category.UpdateCategory())
 		adminV1.GET("/categories", category.AdminGetListCategories())
 		adminV1.GET("/categories/:id", category.AdminGetCategory())
 		adminV1.DELETE("/categories/:id", category.DeleteCategory())
+
+		// product
+		adminV1.POST("/products", product.AdminAddProduct())
 	}
 
 	return router

@@ -194,6 +194,72 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: Update category
+  /admin/api/v1/products:
+    post:
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: name
+        in: body
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: image
+        in: body
+        name: image
+        required: true
+        schema:
+          type: string
+      - description: description
+        in: body
+        name: description
+        schema:
+          type: string
+      - description: price
+        in: body
+        name: price
+        required: true
+        schema:
+          type: number
+      - description: amount
+        in: body
+        name: amount
+        required: true
+        schema:
+          type: integer
+      - description: category_ids
+        in: body
+        name: category_ids
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      - description: image urls
+        in: body
+        name: image_urls
+        required: true
+        schema:
+          items:
+            type: string
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: Add product
   /admin/login:
     post:
       parameters:

@@ -139,3 +139,19 @@ func DeleteCategory(id int64) error {
 
 	return db.Model(&Category{}).Where("id = ?", id).Update("deleted_at", time.Now()).Error
 }
+
+func CheckCategoryIds(ids []int64) (bool, error) {
+	var count int64
+	if len(ids) <= 0 {
+		return false, nil
+	}
+	err := db.Model(&Category{}).Where("id IN (?)", ids).Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+
+	if count == int64(len(ids)) {
+		return true, nil
+	}
+	return false, nil
+}

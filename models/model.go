@@ -50,6 +50,13 @@ func SetUp() {
 	// change column name
 	renameColumn(&Admin{}, "username", "user_name")
 	AddColumn(&CategoryProduct{}, "is_active")
+
+	if db.Migrator().HasIndex(&Image{}, "url") {
+		db.Migrator().DropIndex(&Image{}, "url")
+	}
+	if db.Migrator().HasIndex(&Product{}, "name") {
+		db.Migrator().DropIndex(&Product{}, "name")
+	}
 }
 
 func GetDb() *gorm.DB {
