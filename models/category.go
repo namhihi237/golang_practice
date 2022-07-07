@@ -129,5 +129,13 @@ func CountCategory() int64 {
 }
 
 func DeleteCategory(id int64) error {
-	return db.Model(&Category{}).Delete(&Category{Id: id}).Error
+	countProduct, err := CountProductByCategory(id)
+	if err != nil {
+		return err
+	}
+	if countProduct > 0 {
+		return errors.New("Category has product")
+	}
+
+	return db.Model(&Category{}).Where("id = ?", id).Update("deleted_at", time.Now()).Error
 }

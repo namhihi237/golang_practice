@@ -49,6 +49,7 @@ func SetUp() {
 
 	// change column name
 	renameColumn(&Admin{}, "username", "user_name")
+	AddColumn(&CategoryProduct{}, "is_active")
 }
 
 func GetDb() *gorm.DB {
@@ -80,6 +81,14 @@ func renameColumn(dts interface{}, oldName string, newName string) {
 	if db.Migrator().HasTable(dts) {
 		if db.Migrator().HasColumn(dts, oldName) {
 			db.Migrator().RenameColumn(dts, oldName, newName)
+		}
+	}
+}
+
+func AddColumn(dts interface{}, columnName string) {
+	if db.Migrator().HasTable(dts) {
+		if !db.Migrator().HasColumn(dts, columnName) {
+			db.Migrator().AddColumn(dts, columnName)
 		}
 	}
 }
