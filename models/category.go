@@ -29,7 +29,7 @@ type CategoryResponse struct {
 
 func GetCategoryByName(name string) (*CategoryResponse, error) {
 	var category CategoryResponse
-	err := db.Where("name = ?", name).Limit(1).Find(&category).Error
+	err := db.Model(&Category{}).Where("name = ?", name).Limit(1).Find(&category).Error
 	if err != nil {
 		return nil, err
 	}
@@ -129,8 +129,5 @@ func CountCategory() int64 {
 }
 
 func DeleteCategory(id int64) error {
-	category := &Category{
-		Id: id,
-	}
-	return db.Delete(category).Error
+	return db.Model(&Category{}).Delete(&Category{Id: id}).Error
 }

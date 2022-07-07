@@ -1,7 +1,6 @@
 package category
 
 import (
-	"fmt"
 	"net/http"
 	"practice/models"
 	"practice/pkg/app"
@@ -45,7 +44,6 @@ func AddCategory() gin.HandlerFunc {
 		err = models.CreateCategory(categoryInput.Name, categoryInput.Image, categoryInput.Description)
 
 		if err != nil {
-			fmt.Println(err)
 			appG.Response(http.StatusInternalServerError, errors.INVALID_PARAMS, gin.H{"error": err.Error()})
 			return
 		}

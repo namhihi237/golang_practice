@@ -21,7 +21,19 @@ func DeleteCategory() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		appG := app.Gin{C: c}
 		id := utils.StringToInt64(c.Param("id"))
-		if err := models.DeleteCategory(id); err != nil {
+
+		category, err := models.GetCategoryById(id)
+		if err != nil {
+			appG.Response(http.StatusInternalServerError, errors.SERVER_ERROR, nil)
+			return
+		}
+
+		if category == nil {
+			appG.Response(http.StatusBadRequest, errors.NOT_FOUND, nil)
+			return
+		}
+
+		if err := models.DeleteCategory(category.Id); err != nil {
 			appG.Response(http.StatusBadRequest, errors.NOT_FOUND, err.Error())
 			return
 		}

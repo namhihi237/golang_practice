@@ -21,14 +21,14 @@ func JWT(isAdmin bool) gin.HandlerFunc {
 			data, err = utils.ParseToken(token)
 			if err != nil {
 				code = errors.INVALID_TOKEN
-			}
-
-			user := data.(*utils.Claims)
-
-			if isAdmin {
-				code = validateAdmin(user)
 			} else {
-				code = validateUser(user)
+				user := data.(*utils.Claims)
+
+				if isAdmin {
+					code = validateAdmin(user)
+				} else {
+					code = validateUser(user)
+				}
 			}
 		}
 
