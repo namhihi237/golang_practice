@@ -9,3 +9,4 @@
 
 - `/auth/register` register a user
 - `/auth/login` login a user
+- `/api/v1/profile` get the profile
