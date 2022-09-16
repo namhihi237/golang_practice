@@ -42,6 +42,7 @@ func SendEmailActiveAccount(email string) error {
 		"id":        int64(0),
 		"user_name": "",
 		"email":     email,
+		"user_type": "user",
 	})
 
 	if err != nil {
