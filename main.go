@@ -13,5 +13,4 @@ func main() {
 	initRouter := routers.InitRouter()
 
 	initRouter.Run(":8000")
-
 }
